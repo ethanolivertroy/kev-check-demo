@@ -1,0 +1,79 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Build
+        run: go build -v ./...
+
+      - name: Test
+        run: go test -v -race -coverprofile=coverage.out ./...
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage.out
+          fail_ci_if_error: false
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: latest
+
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Build
+        run: go build -o kev-checker .
+
+      - name: Create test requirements file
+        run: |
+          cat > test-requirements.txt << 'EOF'
+          requests==2.25.0
+          django==3.1.0
+          flask==1.1.2
+          EOF
+
+      - name: Run kev-checker on test file
+        run: |
+          ./kev-checker --no-fail test-requirements.txt
+
+      - name: Test JSON output
+        run: |
+          ./kev-checker --no-fail --format json test-requirements.txt
+
+      - name: Test SARIF output
+        run: |
+          ./kev-checker --no-fail --format sarif --output test.sarif test-requirements.txt
+          cat test.sarif | head -50

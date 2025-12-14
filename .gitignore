@@ -1,0 +1,17 @@
+# Binaries
+kev-checker
+kev-checker-*
+*.exe
+
+# Test outputs
+*.sarif
+coverage.out
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db

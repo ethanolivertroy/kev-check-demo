@@ -1,0 +1,114 @@
+name: 'KEV Checker'
+description: 'Check dependencies for CISA Known Exploited Vulnerabilities (KEV)'
+author: 'ethanolivertroy'
+branding:
+  icon: 'shield'
+  color: 'red'
+
+inputs:
+  path:
+    description: 'Path(s) to scan (space-separated)'
+    required: false
+    default: '.'
+  format:
+    description: 'Output format: terminal, json, sarif'
+    required: false
+    default: 'terminal'
+  epss-threshold:
+    description: 'Only report KEVs with EPSS score >= threshold (0-1)'
+    required: false
+    default: '0'
+  fail-on-kev:
+    description: 'Fail the action if KEVs are found'
+    required: false
+    default: 'true'
+  upload-sarif:
+    description: 'Upload SARIF results to GitHub Code Scanning'
+    required: false
+    default: 'false'
+
+outputs:
+  kev-count:
+    description: 'Number of KEV vulnerabilities found'
+  sarif-file:
+    description: 'Path to generated SARIF file (if format=sarif or upload-sarif=true)'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Download kev-checker
+      shell: bash
+      run: |
+        # Determine OS and architecture
+        OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+        ARCH=$(uname -m)
+
+        case "$ARCH" in
+          x86_64) ARCH="amd64" ;;
+          aarch64|arm64) ARCH="arm64" ;;
+        esac
+
+        # Download the binary
+        RELEASE_URL="https://github.com/ethanolivertroy/kev-checker/releases/latest/download/kev-checker-${OS}-${ARCH}"
+
+        curl -sL "$RELEASE_URL" -o /tmp/kev-checker
+        chmod +x /tmp/kev-checker
+
+    - name: Run kev-checker
+      id: scan
+      shell: bash
+      run: |
+        ARGS="${{ inputs.path }}"
+        ARGS="$ARGS --format ${{ inputs.format }}"
+
+        if [ "${{ inputs.epss-threshold }}" != "0" ]; then
+          ARGS="$ARGS --epss-threshold ${{ inputs.epss-threshold }}"
+        fi
+
+        if [ "${{ inputs.fail-on-kev }}" != "true" ]; then
+          ARGS="$ARGS --no-fail"
+        fi
+
+        # Handle SARIF output
+        SARIF_FILE=""
+        if [ "${{ inputs.format }}" = "sarif" ] || [ "${{ inputs.upload-sarif }}" = "true" ]; then
+          SARIF_FILE="kev-checker-results.sarif"
+          ARGS="${{ inputs.path }} --format sarif --output $SARIF_FILE"
+
+          if [ "${{ inputs.fail-on-kev }}" != "true" ]; then
+            ARGS="$ARGS --no-fail"
+          fi
+
+          if [ "${{ inputs.epss-threshold }}" != "0" ]; then
+            ARGS="$ARGS --epss-threshold ${{ inputs.epss-threshold }}"
+          fi
+        fi
+
+        # Run the scan
+        set +e
+        /tmp/kev-checker $ARGS
+        EXIT_CODE=$?
+        set -e
+
+        # Set outputs
+        if [ -n "$SARIF_FILE" ] && [ -f "$SARIF_FILE" ]; then
+          echo "sarif-file=$SARIF_FILE" >> $GITHUB_OUTPUT
+        fi
+
+        # Count KEVs from SARIF if available
+        if [ -f "$SARIF_FILE" ]; then
+          KEV_COUNT=$(grep -c '"ruleId"' "$SARIF_FILE" || echo "0")
+          echo "kev-count=$KEV_COUNT" >> $GITHUB_OUTPUT
+        fi
+
+        # Exit with original code if fail-on-kev is true
+        if [ "${{ inputs.fail-on-kev }}" = "true" ]; then
+          exit $EXIT_CODE
+        fi
+
+    - name: Upload SARIF to GitHub
+      if: inputs.upload-sarif == 'true' && steps.scan.outputs.sarif-file != ''
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: ${{ steps.scan.outputs.sarif-file }}
+        category: 'kev-checker'
