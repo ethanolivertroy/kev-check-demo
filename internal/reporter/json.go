@@ -3,7 +3,7 @@ package reporter
 import (
 	"encoding/json"
 
-	"github.com/ethanolivertroy/kev-checker/internal/models"
+	"github.com/ethanolivertroy/kev-check-demo/internal/models"
 )
 
 // JSONReporter outputs findings in JSON format

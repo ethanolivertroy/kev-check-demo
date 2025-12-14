@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ethanolivertroy/kev-checker/internal/models"
+	"github.com/ethanolivertroy/kev-check-demo/internal/models"
 )
 
 const osvBatchURL = "https://api.osv.dev/v1/querybatch"

@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/BurntSushi/toml"
-	"github.com/ethanolivertroy/kev-checker/internal/models"
+	"github.com/ethanolivertroy/kev-check-demo/internal/models"
 )
 
 // PythonRequirementsParser parses requirements.txt files

@@ -1,12 +1,22 @@
-# kev-checker
+# kev-check-demo
 
-Check your dependencies for CISA Known Exploited Vulnerabilities (KEV).
+**A demo showing how to integrate security checks into CI/CD pipelines.**
 
-[![Test](https://github.com/ethanolivertroy/kev-checker/actions/workflows/test.yml/badge.svg)](https://github.com/ethanolivertroy/kev-checker/actions/workflows/test.yml)
+[![Test](https://github.com/ethanolivertroy/kev-check-demo/actions/workflows/test.yml/badge.svg)](https://github.com/ethanolivertroy/kev-check-demo/actions/workflows/test.yml)
 
-## Overview
+## What This Is
 
-`kev-checker` scans your project dependencies and identifies any that have known exploited vulnerabilities tracked by [CISA's KEV catalog](https://www.cisa.gov/known-exploited-vulnerabilities-catalog). These are vulnerabilities that are actively being exploited in the wild.
+This is a **demonstration project** showing how you can:
+- Build custom security scanning tools for your pipelines
+- Integrate vulnerability data sources (CISA KEV, EPSS) into CI/CD
+- Create GitHub Actions that fail builds on security issues
+- Output SARIF for GitHub Code Scanning integration
+
+**Use this as a starting point** for building your own pipeline security checks. Fork it, modify it, learn from it.
+
+## How It Works
+
+This tool scans project dependencies and identifies any with known exploited vulnerabilities from [CISA's KEV catalog](https://www.cisa.gov/known-exploited-vulnerabilities-catalog).
 
 The tool:
 1. Parses your dependency files (requirements.txt, package.json, go.mod, etc.)
@@ -26,22 +36,22 @@ The tool:
 
 ### Binary Release
 
-Download the latest release for your platform from [Releases](https://github.com/ethanolivertroy/kev-checker/releases).
+Download the latest release for your platform from [Releases](https://github.com/ethanolivertroy/kev-check-demo/releases).
 
 ```bash
 # Linux (amd64)
-curl -sL https://github.com/ethanolivertroy/kev-checker/releases/latest/download/kev-checker-linux-amd64 -o kev-checker
+curl -sL https://github.com/ethanolivertroy/kev-check-demo/releases/latest/download/kev-checker-linux-amd64 -o kev-checker
 chmod +x kev-checker
 
 # macOS (arm64 / Apple Silicon)
-curl -sL https://github.com/ethanolivertroy/kev-checker/releases/latest/download/kev-checker-darwin-arm64 -o kev-checker
+curl -sL https://github.com/ethanolivertroy/kev-check-demo/releases/latest/download/kev-checker-darwin-arm64 -o kev-checker
 chmod +x kev-checker
 ```
 
 ### From Source
 
 ```bash
-go install github.com/ethanolivertroy/kev-checker@latest
+go install github.com/ethanolivertroy/kev-check-demo@latest
 ```
 
 ## Usage
@@ -113,7 +123,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Check for KEV vulnerabilities
-        uses: ethanolivertroy/kev-checker@v1
+        uses: ethanolivertroy/kev-check-demo@v1
         with:
           path: '.'
           format: 'sarif'

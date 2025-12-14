@@ -1,4 +1,4 @@
-module github.com/ethanolivertroy/kev-checker
+module github.com/ethanolivertroy/kev-check-demo
 
 go 1.25.5
 

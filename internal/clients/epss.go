@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ethanolivertroy/kev-checker/internal/models"
+	"github.com/ethanolivertroy/kev-check-demo/internal/models"
 )
 
 const epssURL = "https://api.first.org/data/v1/epss"

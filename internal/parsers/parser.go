@@ -1,6 +1,6 @@
 package parsers
 
-import "github.com/ethanolivertroy/kev-checker/internal/models"
+import "github.com/ethanolivertroy/kev-check-demo/internal/models"
 
 // Parser is the interface for dependency file parsers
 type Parser interface {

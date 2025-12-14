@@ -6,9 +6,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/ethanolivertroy/kev-checker/internal/models"
-	"github.com/ethanolivertroy/kev-checker/internal/reporter"
-	"github.com/ethanolivertroy/kev-checker/internal/scanner"
+	"github.com/ethanolivertroy/kev-check-demo/internal/models"
+	"github.com/ethanolivertroy/kev-check-demo/internal/reporter"
+	"github.com/ethanolivertroy/kev-check-demo/internal/scanner"
 	"github.com/spf13/cobra"
 )
 

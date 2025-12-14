@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ethanolivertroy/kev-checker/internal/models"
+	"github.com/ethanolivertroy/kev-check-demo/internal/models"
 )
 
 // TerminalReporter outputs findings in a human-readable terminal format

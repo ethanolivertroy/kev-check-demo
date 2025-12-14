@@ -3,7 +3,7 @@ package parsers
 import (
 	"strings"
 
-	"github.com/ethanolivertroy/kev-checker/internal/models"
+	"github.com/ethanolivertroy/kev-check-demo/internal/models"
 	"golang.org/x/mod/modfile"
 )
 

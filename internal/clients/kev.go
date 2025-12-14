@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/ethanolivertroy/kev-checker/internal/cache"
-	"github.com/ethanolivertroy/kev-checker/internal/models"
+	"github.com/ethanolivertroy/kev-check-demo/internal/cache"
+	"github.com/ethanolivertroy/kev-check-demo/internal/models"
 )
 
 const kevURL = "https://raw.githubusercontent.com/cisagov/kev-data/main/known_exploited_vulnerabilities.json"

@@ -1,6 +1,6 @@
 package reporter
 
-import "github.com/ethanolivertroy/kev-checker/internal/models"
+import "github.com/ethanolivertroy/kev-check-demo/internal/models"
 
 // Reporter is the interface for output formatters
 type Reporter interface {

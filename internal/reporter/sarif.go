@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/ethanolivertroy/kev-checker/internal/models"
+	"github.com/ethanolivertroy/kev-check-demo/internal/models"
 )
 
 // SARIFReporter outputs findings in SARIF format for GitHub Code Scanning
@@ -95,7 +95,7 @@ func (r *SARIFReporter) Report(findings []models.Finding) ([]byte, error) {
 				Driver: sarifDriver{
 					Name:           "kev-checker",
 					Version:        "1.0.0",
-					InformationURI: "https://github.com/ethanolivertroy/kev-checker",
+					InformationURI: "https://github.com/ethanolivertroy/kev-check-demo",
 					Rules:          rules,
 				},
 			},

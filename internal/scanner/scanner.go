@@ -7,10 +7,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/ethanolivertroy/kev-checker/internal/cache"
-	"github.com/ethanolivertroy/kev-checker/internal/clients"
-	"github.com/ethanolivertroy/kev-checker/internal/models"
-	"github.com/ethanolivertroy/kev-checker/internal/parsers"
+	"github.com/ethanolivertroy/kev-check-demo/internal/cache"
+	"github.com/ethanolivertroy/kev-check-demo/internal/clients"
+	"github.com/ethanolivertroy/kev-check-demo/internal/models"
+	"github.com/ethanolivertroy/kev-check-demo/internal/parsers"
 )
 
 // Scanner orchestrates the vulnerability scanning process
